@@ -4,7 +4,7 @@ from zipfile import ZipFile
 from saxonche import *
 
 
-def xsldocx(doc_zip,xml_file,xsls):
+def xslDocx(doc_zip,xml_file,xsls):
     doc_xml_file = doc_zip.open(xml_file,"r")
     doc_xml  = io.TextIOWrapper(doc_xml_file, encoding='utf-8', newline='').read()
     #proc = PySaxonProcessor(license=False)
@@ -22,19 +22,20 @@ def xsldocx(doc_zip,xml_file,xsls):
     return out_xml
 
 
-def writeModifiedDocx(doc_zip,docx_out_file,xml_file,out_xml):
+def writeModifiedDocx(input_docx,docx_output_path,xml_paths,xml_outputs):
     # write output to docx file
     # there is no simple command to replace a file in zip
     # Iterate the input files
-    with ZipFile(docx_out_file, mode="w") as out_docx:
-        for inzipinfo in doc_zip.infolist():
+    with ZipFile(docx_output_path, mode="w") as output_docx:
+        for info in input_docx.infolist():
             # Read input file
-            with doc_zip.open(inzipinfo) as infile:
+            with input_docx.open(info) as infile:
                 content = infile.read()
-                if inzipinfo.filename == "word/document.xml":
+                if info.filename in xml_paths:
                     # copy the modified content
-                    out_docx.writestr(inzipinfo.filename, out_xml)
+                    i = xml_paths.index(info.filename)
+                    output_docx.writestr(info.filename, xml_outputs[i])
                 else: # copy the content
-                    out_docx.writestr(inzipinfo.filename, content)
+                    output_docx.writestr(info.filename, content)
 
 

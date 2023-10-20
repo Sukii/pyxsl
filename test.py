@@ -1,5 +1,5 @@
 import sys
-import pyxsl
+from pyxsl import pydocx
 from zipfile import ZipFile
 
 
@@ -9,14 +9,17 @@ xsls = ["xsl/iden.xsl","xsl/text.xsl"]
 # getting docx input file
 
 docx_file = sys.argv[1]
-docx_out_file = docx_file.replace(".docx","_output.docx")
+docx_output_path = docx_file.replace(".docx","_output.docx")
 
 
-xml_file = "word/document.xml"
-doc_zip = ZipFile(docx_file, "r")
+docx = ZipFile(docx_file, "r")
+
+
+xml_paths = ["word/document.xml"]
 
 # apply sequence of xsl on docx to extract xml
-out_xml = pyxsl.xsldocx(doc_zip,xml_file,xsls)
+xml_outputs = []
+xml_outputs.append(pydocx.xslDocx(docx,xml_paths[0],xsls))
 
 # update xml in docx and save
-pyxsl.writeModifiedDocx(doc_zip,docx_out_file,xml_file,out_xml)
+pydocx.writeModifiedDocx(docx,docx_output_path,xml_paths,xml_outputs)
