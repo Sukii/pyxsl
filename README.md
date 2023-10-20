@@ -8,5 +8,5 @@ pip install saxonpy
 ## Run
 run it like:
 ```
-python pydocx4xsl.py /file/to/path/hello.docx
+python test.py docx-samples/hello.docx
 ```
