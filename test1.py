@@ -4,7 +4,7 @@ from zipfile import ZipFile
 
 
 # applying sequence of xsl
-xsls = ["xsl/iden.xsl","xsl/text.xsl"]
+xsls = ["xsl/iden.xsl"]
 
 # getting docx input file
 
